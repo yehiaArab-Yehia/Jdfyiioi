@@ -1,73 +1,14 @@
-/*
-  النسخة الحالية هي واجهة جاهزة.
-  لكي تصبح الرسائل حقيقية ولحظية بين هاتفين، نحتاج ربط هذا الملف
-  بمخزن/قناة realtime. لا توجد خدمة خارجية مفعلة هنا بعد.
-
-  مهم: GitHub Pages لا يوفر قناة realtime أو قاعدة بيانات بحد ذاته.
-*/
-
-const DEMO_USERS = {
-  user1: {name: "1", password: "4"},
-  user2: {name: "الصديق", password: "654321"}
-};
-
-let selectedUser = null;
-let currentUser = null;
-
-const $ = id => document.getElementById(id);
-
-document.querySelectorAll("[data-user]").forEach(btn => {
-  btn.addEventListener("click", () => {
-    selectedUser = btn.dataset.user;
-    document.querySelectorAll("[data-user]").forEach(b => b.classList.remove("selected"));
-    btn.classList.add("selected");
-  });
-});
-
-$("loginBtn").onclick = () => {
-  if (!selectedUser) return $("loginMsg").textContent = "اختر حسابًا أولًا.";
-  if ($("password").value !== DEMO_USERS[selectedUser].password)
-    return $("loginMsg").textContent = "كلمة المرور غير صحيحة.";
-  currentUser = selectedUser;
-  $("login").classList.add("hidden");
-  $("chat").classList.remove("hidden");
-  renderDemo();
-};
-
-$("logoutBtn").onclick = () => {
-  currentUser = null;
-  $("chat").classList.add("hidden");
-  $("login").classList.remove("hidden");
-  $("password").value = "";
-  $("messages").innerHTML = "";
-};
-
-$("sendForm").onsubmit = e => {
-  e.preventDefault();
-  const input = $("messageInput");
-  const text = input.value.trim();
-  if (!text) return;
-  addBubble(text, true, "✓");
-  input.value = "";
-};
-
-function addBubble(text, mine, ticks="") {
-  const box = document.createElement("div");
-  box.className = "bubble " + (mine ? "mine" : "theirs");
-  box.innerHTML = `<div>${escapeHtml(text)}</div>
-    ${mine ? `<span class="meta"><span class="tick">${ticks}</span></span>` : ""}`;
-  $("messages").appendChild(box);
-  $("messages").scrollTop = $("messages").scrollHeight;
-}
-
-function renderDemo(){
-  $("messages").innerHTML = "";
-  addBubble("أهلًا 👋", false);
-  addBubble("أهلًا بك ❤️", true, "✓✓");
-}
-
-function escapeHtml(s){
-  return s.replace(/[&<>"']/g, c => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-  }[c]));
-}
+let pc,dc,role;const $=x=>document.getElementById(x);const cfg={iceServers:[{urls:"stun:stun.l.google.com:19302"}]};
+function make(){pc=new RTCPeerConnection(cfg);pc.onconnectionstatechange=()=>{if(pc.connectionState==="connected"){$("setup").classList.add("hidden");$("chat").classList.remove("hidden");$("status").textContent="متصل ✓"}else $("status").textContent=pc.connectionState};pc.ondatachannel=e=>channel(e.channel);pc.onicecandidate=e=>{if(!e.candidate) $("local").value=enc(pc.localDescription)}}
+function channel(x){dc=x;dc.onopen=()=>{$("setup").classList.add("hidden");$("chat").classList.remove("hidden")};dc.onmessage=e=>{let m=JSON.parse(e.data);if(m.type==="msg"){add(m,false);dc.send(JSON.stringify({type:"seen",id:m.id}))}else if(m.type==="seen")seen(m.id)}}
+function enc(x){return btoa(unescape(encodeURIComponent(JSON.stringify(x))))}function dec(x){return JSON.parse(decodeURIComponent(escape(atob(x.trim()))))}
+async function gather(){if(pc.iceGatheringState==="complete")return;await new Promise(r=>{let f=()=>{if(pc.iceGatheringState==="complete"){pc.removeEventListener("icegatheringstatechange",f);r()}};pc.addEventListener("icegatheringstatechange",f);setTimeout(r,12000)})}
+$("offerBtn").onclick=async()=>{role="offer";make();channel(pc.createDataChannel("chat"));await pc.setLocalDescription(await pc.createOffer());$("status").textContent="أرسل الكود للهاتف 2";await gather();$("local").value=enc(pc.localDescription)}
+$("answerBtn").onclick=()=>{role="answer";make();$("status").textContent="الصق كود الهاتف 1"}
+$("connect").onclick=async()=>{try{await pc.setRemoteDescription(dec($("remote").value));if(role==="answer"){await pc.setLocalDescription(await pc.createAnswer());await gather();$("local").value=enc(pc.localDescription);$("status").textContent="أرسل كود الرد للهاتف 1"}else $("status").textContent="جاري الاتصال..."}catch(e){$("status").textContent="الكود غير صالح"}}
+$("copy").onclick=()=>navigator.clipboard.writeText($("local").value)
+$("form").onsubmit=e=>{e.preventDefault();let t=$("input").value.trim();if(!t||!dc||dc.readyState!=="open")return;let m={type:"msg",id:crypto.randomUUID(),text:t};dc.send(JSON.stringify(m));add(m,true);$("input").value=""}
+function add(m,mine){let d=document.createElement("div");d.className="bubble "+(mine?"mine":"");d.dataset.id=m.id;d.innerHTML="<div>"+esc(m.text)+"</div>"+(mine?'<span class="meta ticks">✓✓</span>':"");$("messages").appendChild(d);$("messages").scrollTop=$("messages").scrollHeight}
+function seen(id){let x=document.querySelector('[data-id="'+id+'"] .ticks');if(x){x.textContent="✓✓";x.style.color="#1687d9"}}
+function esc(s){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+$("reset").onclick=()=>location.reload();

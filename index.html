@@ -1,49 +1,7 @@
-<!doctype html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <title>محادثتي الخاصة</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <main class="app">
-    <section id="login" class="card">
-      <h1>محادثتي الخاصة 🔒</h1>
-      <p>هذا الموقع مخصص لشخصين فقط.</p>
-      <label>اختر حسابك</label>
-      <div class="users">
-        <button data-user="user1">يحيى</button>
-        <button data-user="user2">الصديق</button>
-      </div>
-      <input id="password" type="password" placeholder="كلمة المرور">
-      <button id="loginBtn" class="primary">دخول</button>
-      <p id="loginMsg" class="msg"></p>
-    </section>
-
-    <section id="chat" class="chat hidden">
-      <header>
-        <div>
-          <strong>يحيى ↔ الصديق</strong>
-          <small id="status">متصل</small>
-        </div>
-        <button id="logoutBtn" title="خروج">خروج</button>
-      </header>
-
-      <div id="messages" class="messages"></div>
-
-      <form id="sendForm" class="composer">
-        <input id="messageInput" autocomplete="off" maxlength="2000"
-               placeholder="اكتب رسالة...">
-        <button type="submit">إرسال</button>
-      </form>
-    </section>
-  </main>
-
-  <!--
-    هذا الملف هو نقطة الاتصال الوحيدة بالخدمة اللحظية.
-    ضع إعدادات الخدمة التي ستختارها لاحقًا هنا.
-  -->
-  <script src="app.js"></script>
-</body>
-</html>
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>محادثة خاصة</title><link rel="stylesheet" href="style.css"></head><body><main class="app">
+<section id="setup"><h1>محادثة خاصة 🔒</h1><p>ربط مباشر بين هاتفين عبر WebRTC.</p>
+<button id="offerBtn">هاتف 1: إنشاء كود</button><button id="answerBtn">هاتف 2: استقبال</button>
+<label>كودك</label><textarea id="local" readonly></textarea><button id="copy">نسخ</button>
+<label>كود الطرف الآخر</label><textarea id="remote"></textarea><button id="connect">إتمام الاتصال</button><p id="status">غير متصل</p></section>
+<section id="chat" class="hidden"><header><b>محادثة خاصة</b><button id="reset">فصل</button></header><div id="messages"></div><form id="form"><input id="input" placeholder="اكتب رسالة..." autocomplete="off"><button>إرسال</button></form></section>
+</main><script src="app.js"></script></body></html>
