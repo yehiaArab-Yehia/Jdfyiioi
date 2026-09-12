@@ -1,10 +1,3 @@
-# WebRTC Chat
-ارفع الملفات إلى GitHub Pages.
-1. الهاتف 1: إنشاء كود.
-2. أرسل الكود للهاتف 2.
-3. الهاتف 2: استقبال، الصق الكود، إتمام الاتصال.
-4. أرسل كود الرد للهاتف 1.
-5. الهاتف 1 يلصق الرد ويضغط إتمام الاتصال.
-6. بعد ظهور متصل تبدأ الدردشة.
+# WebRTC Chat Tutorial
 
-بعد الاتصال الرسائل تنتقل عبر WebRTC DataChannel مباشرة بين الجهازين. صفحة GitHub Pages يجب أن تعمل عبر HTTPS.
+This is the code for the tutorial found [here](https://www.scaledrone.com/blog/posts/webrtc-chat-tutorial).
