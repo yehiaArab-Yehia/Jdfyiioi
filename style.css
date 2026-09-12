@@ -1,0 +1,29 @@
+*{box-sizing:border-box}
+body{margin:0;background:#eef1f5;font-family:Arial,sans-serif;color:#17202a}
+.app{width:min(100%,760px);height:100vh;margin:auto;background:white}
+.card{margin:12vh 20px 0;padding:28px;border-radius:18px;box-shadow:0 8px 30px #0001;text-align:center}
+h1{margin-top:0}
+.card label{display:block;text-align:right;margin:20px 0 8px}
+.users{display:flex;gap:10px}
+.users button,.primary{flex:1;padding:13px;border:0;border-radius:12px;cursor:pointer}
+.users button{background:#e8edf2}
+.users button.selected{background:#cfe8ff}
+input{width:100%;padding:13px;border:1px solid #ccd3da;border-radius:12px;font-size:16px;margin-top:12px}
+.primary{margin-top:12px;background:#1769aa;color:white}
+.msg{min-height:20px}
+.hidden{display:none!important}
+.chat{height:100%;display:flex;flex-direction:column}
+header{padding:15px 18px;background:#f5f7f9;border-bottom:1px solid #ddd;display:flex;justify-content:space-between;align-items:center}
+header strong{display:block}
+header small{color:#4b8a57}
+header button{border:0;background:transparent;cursor:pointer}
+.messages{flex:1;overflow:auto;padding:18px;background:#efe7dc}
+.bubble{max-width:78%;padding:9px 12px;margin:7px 0;border-radius:14px;line-height:1.5;word-wrap:break-word}
+.mine{margin-right:auto;background:#d9fdd3;border-top-right-radius:4px}
+.theirs{margin-left:auto;background:white;border-top-left-radius:4px}
+.meta{font-size:11px;color:#667;display:block;margin-top:3px;text-align:left}
+.tick{font-size:13px;letter-spacing:-2px}
+.read{color:#1687d9}
+.composer{display:flex;gap:8px;padding:10px;background:#f5f7f9}
+.composer input{margin:0;flex:1}
+.composer button{border:0;border-radius:12px;padding:0 18px;background:#1769aa;color:#fff}
